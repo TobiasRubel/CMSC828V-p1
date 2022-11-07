@@ -91,16 +91,14 @@ gfun = @(I,w)gfun0(I,Y,w,lam);
 Hvec = @(I,w,v)Hvec0(I,Y,w,v,lam);
 w = ones(dim+1,1);
 % params for SINewton
-%frac = 10;
-%frac = 3;
-frac = 2;
+frac = 10;
 bsz = ceil(Ntrain/frac); % batch size
-kmax = 1e3*frac; % the max number of iterations
-%kmax = 200;
+%kmax = 1e3*frac; % the max number of iterations
+kmax = 200;
 tol = 1e-4;
 % call the optimizer
-[w,f, gnorm] = ADAM(fun,gfun,Y,w,bsz,kmax,tol);
-%[w,f, gnorm] = LBFGS(fun,gfun,Hvec,Y,w,bsz,kmax,tol);
+[w,f, gnorm] = Snesterov(fun,gfun,Y,w,bsz,kmax,tol);
+[w,f, gnorm] = SGD(fun,gfun,Y,w,bsz,kmax,tol);
 %[w,f,gnorm] = SINewton(fun,gfun,Hvec,Y,w,bsz,kmax,tol);
 wvec = w(1:dim);
 b = w(end);
